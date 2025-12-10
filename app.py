@@ -25,6 +25,8 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from io import StringIO
 from PyPDF2 import PdfReader
+from dotenv import load_dotenv
+load_dotenv()
 
 files=st.file_uploader("Upload your file / files",type=["py","txt","pdf"],accept_multiple_files=True)
 string_data=" "
@@ -69,7 +71,7 @@ if prompt:
         groq_sys_prompt=ChatPromptTemplate.from_template(knowledgeBase)
     model="llama-3.3-70b-versatile"
     groq_chat=ChatGroq(
-        groq_api_key='REMOVED',
+        groq_api_key=os.getenv("GROQ_API_KEY"),
         model_name=model,
     )
     chain=groq_sys_prompt | groq_chat | StrOutputParser()
